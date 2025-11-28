@@ -27,7 +27,7 @@ public class UserServiceTests {
 	private UserService userService;
 
 	@Test
-	public void CreateUser_returnsUserWithTransferedData_whenUserIsValid() {
+	public void createUser_returnsUserWithTransferedData_whenUserIsValid() {
 
 		String password = "abejitamaya123";
 		String expectedEncodedPassword = "ENCRYPTED";
@@ -35,10 +35,24 @@ public class UserServiceTests {
 		when(passwordEncoderOutPort.encode(password)).thenReturn(expectedEncodedPassword);
 		when(userRepositoryOutPort.createUser(any(User.class)))
 				.thenReturn(new User(1l, "ericardio@prueba.com", expectedEncodedPassword));
+
 		User result = userService.createUser(user);
 
 		assertEquals(user.email(), result.email());
 		assertEquals(expectedEncodedPassword, result.password());
 		assertEquals(1l, result.id());
+	}
+
+	@Test
+	public void getUserById_returnsUser_whenUserExist() {
+		User existingUser = new User(1l, "ericardio@prueba.com", "abejitamaya123");
+		Long searchId = 1l;
+		when(userRepositoryOutPort.getUserById(1l)).thenReturn(existingUser);
+
+		User result = userService.getUserById(searchId);
+
+		assertEquals(existingUser.id(), result.id());
+		assertEquals(existingUser.email(), result.email());
+		assertEquals(existingUser.password(), result.password());
 	}
 }
