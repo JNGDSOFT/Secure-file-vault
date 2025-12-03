@@ -9,11 +9,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.music_academy.app.application.port.out.PasswordEncoderOutPort;
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
 import com.music_academy.app.application.service.UserService;
 import com.music_academy.app.domain.model.User;
+import com.music_academy.app.infrastructure.persistance.model.UserEntity;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {

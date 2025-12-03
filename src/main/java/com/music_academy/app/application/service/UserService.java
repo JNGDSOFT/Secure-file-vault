@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserService implements CreateUserUseCase, GetUserById, UserDetailsService {
+public class UserService implements CreateUserUseCase, GetUserById {
 
 	private final UserRepositoryOutPort userRepositoryOutPort;
 
@@ -28,11 +28,4 @@ public class UserService implements CreateUserUseCase, GetUserById, UserDetailsS
 	public User getUserById(Long id) {
 		return userRepositoryOutPort.getUserById(id);
 	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -1,6 +1,8 @@
 package com.music_academy.app.infrastructure.persistance;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
@@ -14,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @Repository
 @AllArgsConstructor
-public class JpaRepositoryUserAdapter implements UserRepositoryOutPort {
+public class JpaRepositoryUserAdapter implements UserRepositoryOutPort, UserDetailsService {
 	private final SpringDataUserRepository springDataUserRepository;
 	private final UserMapper userMapper;
 
@@ -31,10 +33,10 @@ public class JpaRepositoryUserAdapter implements UserRepositoryOutPort {
 				.orElseThrow(() -> new NotFoundByIdException());
 		return userMapper.mapEntityToUser(foundUser);
 	}
-
+	
 	@Override
-	public UserDetails loadUserByUserName(String name) {
-		return (UserDetails) springDataUserRepository.findByEmail(name)
-				.orElseThrow(() -> new NotFoundByNameException());
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

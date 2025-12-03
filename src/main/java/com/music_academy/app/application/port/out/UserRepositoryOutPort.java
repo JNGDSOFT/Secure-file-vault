@@ -8,6 +8,4 @@ public interface UserRepositoryOutPort {
 	User createUser(User user);
 
 	User getUserById(Long id);
-
-	UserDetails loadUserByUserName(String name);
 }
