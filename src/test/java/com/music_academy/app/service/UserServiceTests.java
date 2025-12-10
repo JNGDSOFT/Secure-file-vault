@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.music_academy.app.application.port.out.PasswordEncoderOutPort;
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
 import com.music_academy.app.application.service.UserService;
+import com.music_academy.app.domain.model.Role;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.persistance.model.UserEntity;
 
@@ -33,10 +34,10 @@ public class UserServiceTests {
 
 		String password = "abejitamaya123";
 		String expectedEncodedPassword = "ENCRYPTED";
-		User user = new User(null, "ericardio@prueba.com", password);
+		User user = new User(null, Role.USER, "ericardio@prueba.com", password);
 		when(passwordEncoderOutPort.encode(password)).thenReturn(expectedEncodedPassword);
 		when(userRepositoryOutPort.createUser(any(User.class)))
-				.thenReturn(new User(1l, "ericardio@prueba.com", expectedEncodedPassword));
+				.thenReturn(new User(1l, Role.USER, "ericardio@prueba.com", expectedEncodedPassword));
 
 		User result = userService.createUser(user);
 
@@ -47,7 +48,7 @@ public class UserServiceTests {
 
 	@Test
 	public void getUserById_returnsUser_whenUserExist() {
-		User existingUser = new User(1l, "ericardio@prueba.com", "abejitamaya123");
+		User existingUser = new User(1l, Role.USER, "ericardio@prueba.com", "abejitamaya123");
 		Long searchId = 1l;
 		when(userRepositoryOutPort.getUserById(1l)).thenReturn(existingUser);
 

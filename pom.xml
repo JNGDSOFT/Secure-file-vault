@@ -9,11 +9,11 @@
 		<version>4.0.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.filevault</groupId>
-	<artifactId>sfv</artifactId>
+	<groupId>com.music_academy.app</groupId>
+	<artifactId>application</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>secure_file_vault</name>
-	<description>Application for the storage of files</description>
+	<description>Application for a music academy</description>
 	<url />
 	<licenses>
 		<license />

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
 import com.music_academy.app.application.service.UserService;
@@ -25,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+	//private final JwtAuthFilter jwtAuthFilter;
+
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(csrf -> csrf.disable())
@@ -32,7 +35,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(request -> {
 					request.requestMatchers("/helloWorld").permitAll();
 					request.anyRequest().authenticated();
-				});
+				})/*.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)*/;
 		return httpSecurity.build();
 	}
 
