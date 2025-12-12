@@ -1,11 +1,13 @@
 package com.music_academy.app.infrastructure.security;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
+import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.config.JwtProperties;
 
 import io.jsonwebtoken.Jwts;

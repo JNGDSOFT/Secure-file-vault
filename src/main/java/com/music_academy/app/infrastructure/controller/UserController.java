@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.music_academy.app.application.port.in.CreateUserUseCase;
-import com.music_academy.app.application.port.in.GetUserById;
+import com.music_academy.app.application.port.in.GetUserByIdUseCase;
+import com.music_academy.app.application.port.in.SignUpUserUseCase;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.controller.dto.UserRequestDTO;
 import com.music_academy.app.infrastructure.controller.dto.UserResponseDTO;
@@ -25,18 +24,20 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserController {
 
-	private final CreateUserUseCase createUserUseCase;
-	private final GetUserById getUserById;
+	private final SignUpUserUseCase signUpUserUseCase;
+	private final GetUserByIdUseCase getUserById;
 	private final UserMapper userMapper;
 
-	@PostMapping
-	public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
-		final User user = userMapper.mapRequestToUser(userRequestDTO);
-		final User createdUser = createUserUseCase.createUser(user);
-		final UserResponseDTO userResponseDTO = userMapper.mapUserToResponseDTO(createdUser);
-		URI uri = URIUtils.getCreatedElementURI(createdUser.id());
+	@PostMapping("/signup")
+	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserRequestDTO userRequestDTO) {
 
-		return ResponseEntity.created(uri).body(userResponseDTO);
+		final User user = userMapper.mapRequestToUser(userRequestDTO);
+
+		signUpUserUseCase.signUp(user.email(), user.password());
+
+		final UserResponseDTO userResponseDTO = userMapper.mapUserToResponseDTO(user);
+
+		return ResponseEntity.created(null).body(userResponseDTO);
 	}
 
 	@GetMapping("/{id}")

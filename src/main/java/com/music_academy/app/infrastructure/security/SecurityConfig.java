@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
-import com.music_academy.app.application.service.UserService;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
 import com.music_academy.app.infrastructure.persistance.JpaRepositoryUserAdapter;
@@ -26,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	//private final JwtAuthFilter jwtAuthFilter;
+	private final JwtAuthFilter jwtAuthFilter;
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -34,8 +33,10 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(request -> {
 					request.requestMatchers("/helloWorld").permitAll();
+					request.requestMatchers("/users/signup").permitAll();
+					request.requestMatchers("/users/login").permitAll();
 					request.anyRequest().authenticated();
-				})/*.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)*/;
+				}).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		return httpSecurity.build();
 	}
 

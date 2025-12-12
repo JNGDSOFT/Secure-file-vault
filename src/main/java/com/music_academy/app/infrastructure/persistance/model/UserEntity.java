@@ -46,7 +46,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(email));
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override

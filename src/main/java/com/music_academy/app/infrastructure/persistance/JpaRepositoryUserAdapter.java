@@ -33,7 +33,7 @@ public class JpaRepositoryUserAdapter implements UserRepositoryOutPort, UserDeta
 				.orElseThrow(() -> new NotFoundByIdException());
 		return userMapper.mapEntityToUser(foundUser);
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
