@@ -6,6 +6,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 public class URIUtils {
 
+	private URIUtils() {
+
+	}
+
 	/**
 	 * Obtiene la URI del elemento recien creado basandose en el path actual
 	 * 

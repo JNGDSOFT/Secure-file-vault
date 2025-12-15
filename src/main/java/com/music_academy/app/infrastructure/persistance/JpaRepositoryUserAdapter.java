@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.exception.NotFoundByIdException;
-import com.music_academy.app.infrastructure.exception.NotFoundByNameException;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
 import com.music_academy.app.infrastructure.persistance.model.UserEntity;
 
@@ -29,8 +28,7 @@ public class JpaRepositoryUserAdapter implements UserRepositoryOutPort, UserDeta
 
 	@Override
 	public User getUserById(Long id) {
-		final UserEntity foundUser = springDataUserRepository.findById(id)
-				.orElseThrow(() -> new NotFoundByIdException());
+		final UserEntity foundUser = springDataUserRepository.findById(id).orElseThrow(NotFoundByIdException::new);
 		return userMapper.mapEntityToUser(foundUser);
 	}
 

@@ -5,18 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.music_academy.app.application.port.out.UserRepositoryOutPort;
-import com.music_academy.app.domain.model.User;
-import com.music_academy.app.infrastructure.mapper.UserMapper;
-import com.music_academy.app.infrastructure.persistance.JpaRepositoryUserAdapter;
-import com.music_academy.app.infrastructure.persistance.SpringDataUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,13 +20,13 @@ public class SecurityConfig {
 	private final JwtAuthFilter jwtAuthFilter;
 
 	@Bean
-	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
 		httpSecurity.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(request -> {
 					request.requestMatchers("/helloWorld").permitAll();
-					request.requestMatchers("/users/signup").permitAll();
-					request.requestMatchers("/users/login").permitAll();
+					request.requestMatchers("/api/users/login").permitAll();
+					request.requestMatchers("/api/auth/register").permitAll();
 					request.anyRequest().authenticated();
 				}).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		return httpSecurity.build();

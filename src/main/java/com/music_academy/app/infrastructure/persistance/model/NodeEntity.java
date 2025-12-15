@@ -27,7 +27,7 @@ public class NodeEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "id_parent_node")
-	private NodeEntity nodeEntity;
+	private NodeEntity parentNode;
 
 	@ManyToOne
 	@JoinColumn(name = "id_user")
