@@ -1,5 +1,5 @@
 package com.music_academy.app.infrastructure.controller.dto;
 
-public record UserResponseDTO(Long id, String email, String password) {
+public record UserResponseDTO(Long id, String email) {
 
 }

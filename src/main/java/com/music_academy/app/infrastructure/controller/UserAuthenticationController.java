@@ -15,27 +15,28 @@ import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.controller.dto.UserRequestDTO;
 import com.music_academy.app.infrastructure.controller.dto.UserResponseDTO;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
+import com.music_academy.app.infrastructure.persistance.model.UserEntity;
 import com.music_academy.app.infrastructure.utils.URIUtils;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 @AllArgsConstructor
-public class UserController {
+public class UserAuthenticationController {
 
 	private final SignUpUserUseCase signUpUserUseCase;
 	private final GetUserByIdUseCase getUserById;
 	private final UserMapper userMapper;
 
-	@PostMapping("/signup")
+	@PostMapping("/register")
 	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserRequestDTO userRequestDTO) {
 
 		final User user = userMapper.mapRequestToUser(userRequestDTO);
 
-		signUpUserUseCase.signUp(user.email(), user.password());
+		final User createdUser = signUpUserUseCase.signUp(user.email(), user.password());
 
-		final UserResponseDTO userResponseDTO = userMapper.mapUserToResponseDTO(user);
+		final UserResponseDTO userResponseDTO = userMapper.mapUserToResponseDTO(createdUser);
 
 		return ResponseEntity.created(null).body(userResponseDTO);
 	}
