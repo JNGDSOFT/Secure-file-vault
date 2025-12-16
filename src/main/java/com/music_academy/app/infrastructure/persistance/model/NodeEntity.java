@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.music_academy.app.domain.model.NodeType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "nodes")
 public class NodeEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,7 +33,7 @@ public class NodeEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "id_user")
-	private UserEntity userEntity;
+	private UserEntity owner;
 
 	private LocalDateTime creationDateTime;
 
@@ -42,5 +44,6 @@ public class NodeEntity {
 
 	private Long size;
 
+	@Column(unique = true)
 	private String s3Key;
 }
