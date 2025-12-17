@@ -1,5 +1,6 @@
 package com.music_academy.app.infrastructure.security;
 
+import java.util.List;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,9 +41,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		final String token = authHeader.substring(7);
 
 		try {
-			final String username = jwtUtil.extractUsername(token);
+			final Claims claims = jwtUtil.getClaims(token);
+			
+			final String username = claims.getSubject();
 
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+				List<String> roles = claims.get(token, List.class);
+
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

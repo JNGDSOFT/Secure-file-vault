@@ -37,7 +37,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 	private String password;
 
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private List<Role> role;
 
 	@Override
 	public void eraseCredentials() {
@@ -46,7 +46,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return role.stream().map(r -> new SimpleGrantedAuthority(r.name())).toList();
 	}
 
 	@Override

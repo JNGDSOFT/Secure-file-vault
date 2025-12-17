@@ -1,4 +1,6 @@
 package com.music_academy.app.domain.model;
 
-public record User(Long id, Role role, String email, String password) {
+import java.util.List;
+
+public record User(Long id, List<Role> roles, String email, String password) {
 }

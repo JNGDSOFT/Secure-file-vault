@@ -14,6 +14,6 @@ public class JwtAdapter implements JwtProviderOutPort {
 
 	@Override
 	public String generateToken(User user) {
-		return jwtUtil.generateToken(user.id(), user.email());
+		return jwtUtil.generateToken(user);
 	}
 }
