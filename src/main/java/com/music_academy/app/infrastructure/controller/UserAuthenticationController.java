@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.music_academy.app.application.port.in.GetUserByIdUseCase;
+import com.music_academy.app.application.port.in.LogInUserUseCase;
 import com.music_academy.app.application.port.in.SignUpUserUseCase;
 import com.music_academy.app.domain.model.User;
-import com.music_academy.app.infrastructure.controller.dto.UserRequestDTO;
+import com.music_academy.app.infrastructure.controller.dto.UserSignUpRequestDTO;
 import com.music_academy.app.infrastructure.controller.dto.UserResponseDTO;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
 import com.music_academy.app.infrastructure.persistance.model.UserEntity;
@@ -26,19 +27,28 @@ import lombok.AllArgsConstructor;
 public class UserAuthenticationController {
 
 	private final SignUpUserUseCase signUpUserUseCase;
+	private final LogInUserUseCase logInUserUseCase;
 	private final GetUserByIdUseCase getUserById;
 	private final UserMapper userMapper;
 
 	@PostMapping("/register")
-	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserRequestDTO userRequestDTO) {
+	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserSignUpRequestDTO userSignUpRequestDTO) {
 
-		final User user = userMapper.mapRequestToUser(userRequestDTO);
+		final User user = userMapper.mapSignUpRequestToUser(userSignUpRequestDTO);
 
 		final User createdUser = signUpUserUseCase.signUp(user.email(), user.password());
 
 		final UserResponseDTO userResponseDTO = userMapper.mapUserToResponseDTO(createdUser);
 
-		return ResponseEntity.created(null).body(userResponseDTO);
+		URI uri = URIUtils.getCreatedElementURI("/login", createdUser.id());
+
+		return ResponseEntity.created(uri).body(userResponseDTO);
+	}
+
+	@GetMapping("/login")
+	public ResponseEntity<Void> logInUser() {
+		
+		return null;
 	}
 
 	@GetMapping("/{id}")

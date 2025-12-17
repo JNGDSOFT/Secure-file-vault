@@ -3,7 +3,7 @@ package com.music_academy.app.application.service;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
-import com.music_academy.app.application.port.in.LogInUseCase;
+import com.music_academy.app.application.port.in.LogInUserUseCase;
 import com.music_academy.app.application.port.out.FindUserByEmailOutPort;
 import com.music_academy.app.application.port.out.JwtProviderOutPort;
 import com.music_academy.app.application.port.out.PasswordEncoderOutPort;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LogInService implements LogInUseCase {
+public class LogInService implements LogInUserUseCase {
 
 	private final FindUserByEmailOutPort findUserByEmailOutPort;
 	private final PasswordEncoderOutPort passwordEncoderOutPort;
