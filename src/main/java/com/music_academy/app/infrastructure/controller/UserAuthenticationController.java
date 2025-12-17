@@ -36,10 +36,6 @@ public class UserAuthenticationController {
 	private final GetUserByIdUseCase getUserById;
 	private final UserMapper userMapper;
 
-	UserAuthenticationController(CreateBucketDirectoryAdapter createBucketDirectoryAdapter) {
-		this.createBucketDirectoryAdapter = createBucketDirectoryAdapter;
-	}
-
 	@PostMapping("/register")
 	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserSignUpRequestDTO userSignUpRequestDTO) {
 

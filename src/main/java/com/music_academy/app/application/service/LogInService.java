@@ -20,7 +20,7 @@ public class LogInService implements LogInUserUseCase {
 
 	@Override
 	public String logIn(String email, String password) {
-		// TODO check if there is a better exception throw
+
 		User user = findUserByEmailOutPort.findUserByEmail(email);
 		boolean matches = passwordEncoderOutPort.matches(password, user.password());
 		if (!matches) {
