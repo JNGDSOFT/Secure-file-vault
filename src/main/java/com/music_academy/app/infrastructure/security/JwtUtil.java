@@ -21,11 +21,11 @@ public class JwtUtil {
 
 	private final JwtProperties jwtProperties;
 
-	public String generateToken(String username) {
+	public String generateToken(Long userId, String username) {
 		Date now = new Date();
 		Date expiry = new Date(now.getTime() + jwtProperties.getExpiration());
 
-		return Jwts.builder().subject(username).issuedAt(now).expiration(expiry)
+		return Jwts.builder().subject(username).claim("userId", userId).issuedAt(now).expiration(expiry)
 				.signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes()), SIG.HS256).compact();
 	}
 
