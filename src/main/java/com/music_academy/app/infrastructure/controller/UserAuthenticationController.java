@@ -14,9 +14,12 @@ import com.music_academy.app.application.port.in.LogInUserUseCase;
 import com.music_academy.app.application.port.in.SignUpUserUseCase;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.controller.dto.UserSignUpRequestDTO;
+import com.music_academy.app.infrastructure.controller.dto.UserLogInRequestDTO;
+import com.music_academy.app.infrastructure.controller.dto.UserLogInResponseDTO;
 import com.music_academy.app.infrastructure.controller.dto.UserResponseDTO;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
 import com.music_academy.app.infrastructure.persistance.model.UserEntity;
+import com.music_academy.app.infrastructure.storage.CreateBucketDirectoryAdapter;
 import com.music_academy.app.infrastructure.utils.URIUtils;
 
 import lombok.AllArgsConstructor;
@@ -26,10 +29,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserAuthenticationController {
 
+	private final CreateBucketDirectoryAdapter createBucketDirectoryAdapter;
+
 	private final SignUpUserUseCase signUpUserUseCase;
 	private final LogInUserUseCase logInUserUseCase;
 	private final GetUserByIdUseCase getUserById;
 	private final UserMapper userMapper;
+
+	UserAuthenticationController(CreateBucketDirectoryAdapter createBucketDirectoryAdapter) {
+		this.createBucketDirectoryAdapter = createBucketDirectoryAdapter;
+	}
 
 	@PostMapping("/register")
 	public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody UserSignUpRequestDTO userSignUpRequestDTO) {
@@ -46,9 +55,12 @@ public class UserAuthenticationController {
 	}
 
 	@GetMapping("/login")
-	public ResponseEntity<Void> logInUser() {
-		
-		return null;
+	public ResponseEntity<UserLogInResponseDTO> logInUser(@RequestBody UserLogInRequestDTO userLogInRequestDTO) {
+
+		String token = logInUserUseCase.logIn(userLogInRequestDTO.email(), userLogInRequestDTO.password());
+		UserLogInResponseDTO userLogInResponseDTO = UserLogInResponseDTO.builder().token(token).build();
+
+		return ResponseEntity.ok(userLogInResponseDTO);
 	}
 
 	@GetMapping("/{id}")
