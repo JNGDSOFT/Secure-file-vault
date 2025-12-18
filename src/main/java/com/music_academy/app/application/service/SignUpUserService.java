@@ -1,6 +1,7 @@
 package com.music_academy.app.application.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class SignUpUserService implements SignUpUserUseCase {
 	@Override
 	public User signUp(String email, String password) {
 
-		User user = new User(null, List.of(Role.USER), email, passwordEncoderOutPort.encode(password));
+		User user = new User(null, Set.of(Role.USER), email, passwordEncoderOutPort.encode(password));
 
 		User createdUser = userRepositoryOutPort.createUser(user);
 
