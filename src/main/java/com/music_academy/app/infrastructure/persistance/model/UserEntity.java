@@ -41,7 +41,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 
 	private String password;
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false))
 	@Column(name = "role_name", length = 50, nullable = false)
 	@Enumerated(EnumType.STRING)

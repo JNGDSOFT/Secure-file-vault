@@ -2,11 +2,14 @@ package com.music_academy.app.infrastructure.security;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,12 +52,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 				@SuppressWarnings("unchecked")
-				Set<String> roles = claims.get(token, Set.class);
+				Collection<String> roles = claims.get("roles", Collection.class);
+
+				Set<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new)
+						.collect(Collectors.toSet());
 
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
+						userDetails, null, authorities);
 
 				authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
