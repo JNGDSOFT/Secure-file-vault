@@ -1,6 +1,7 @@
 package com.music_academy.app.infrastructure.security;
 
 import java.util.List;
+import java.util.Set;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -42,12 +43,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		try {
 			final Claims claims = jwtUtil.getClaims(token);
-			
+
 			final String username = claims.getSubject();
 
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-				List<String> roles = claims.get(token, List.class);
+				@SuppressWarnings("unchecked")
+				Set<String> roles = claims.get(token, Set.class);
 
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 

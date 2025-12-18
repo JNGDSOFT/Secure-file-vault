@@ -45,7 +45,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 	@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false))
 	@Column(name = "role_name", length = 50, nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Set<Role> role;
+	private Set<Role> roles;
 
 	@Override
 	public void eraseCredentials() {
@@ -54,7 +54,7 @@ public class UserEntity implements UserDetails, CredentialsContainer {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return role.stream().map(r -> new SimpleGrantedAuthority(r.name())).toList();
+		return roles.stream().map(r -> new SimpleGrantedAuthority(r.name())).toList();
 	}
 
 	@Override
