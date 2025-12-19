@@ -16,7 +16,7 @@ public class JpaTokenBlacklistRepository implements TokenBlacklistRepositoryOutP
 	private final SpringDataTokenBlacklistRepository springDataTokenBlacklistRepository;
 
 	@Override
-	public void saveToken(UUID jti, Long instant) {
+	public void addTokenToBlacklist(UUID jti, Long instant) {
 		TokenBlacklistEntity tokenBlacklistEntity = new TokenBlacklistEntity();
 		tokenBlacklistEntity.setJti(jti);
 		tokenBlacklistEntity.setExpirationInstant(instant);
@@ -28,6 +28,11 @@ public class JpaTokenBlacklistRepository implements TokenBlacklistRepositoryOutP
 	public void cleanExpiratedTokens() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean isTokenInBlacklist(UUID jti) {
+		return springDataTokenBlacklistRepository.existsById(jti);
 	}
 
 }

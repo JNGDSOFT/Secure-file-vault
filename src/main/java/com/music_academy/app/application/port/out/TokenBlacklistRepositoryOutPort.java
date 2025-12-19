@@ -4,7 +4,9 @@ import java.util.UUID;
 
 public interface TokenBlacklistRepositoryOutPort {
 
-	void saveToken(UUID jti, Long instant);
+	void addTokenToBlacklist(UUID jti, Long instant);
 
 	void cleanExpiratedTokens();
+
+	boolean isTokenInBlacklist(UUID jti);
 }

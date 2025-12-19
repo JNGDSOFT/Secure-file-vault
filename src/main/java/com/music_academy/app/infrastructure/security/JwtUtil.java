@@ -3,6 +3,7 @@ package com.music_academy.app.infrastructure.security;
 import java.util.List;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -28,7 +29,7 @@ public class JwtUtil {
 		Date expiry = new Date(now.getTime() + jwtProperties.getExpirationMillis());
 
 		return Jwts.builder().subject(user.email()).claim("userId", user.id()).claim("roles", user.roles())
-				.issuedAt(now).expiration(expiry)
+				.claim("jti", UUID.randomUUID().toString()).issuedAt(now).expiration(expiry)
 				.signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes()), SIG.HS256).compact();
 	}
 

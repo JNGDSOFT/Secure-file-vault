@@ -2,11 +2,13 @@ package com.music_academy.app.infrastructure.security;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.music_academy.app.application.port.out.TokenBlacklistRepositoryOutPort;
 
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
@@ -29,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 	private final JwtUtil jwtUtil;
+	private final TokenBlacklistRepositoryOutPort tokenBlacklistRepositoryOutPort;
 	private final UserDetailsService userDetailsService;
 
 	@Override
@@ -47,9 +52,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		try {
 			final Claims claims = jwtUtil.getClaims(token);
 
+			final boolean isTokenInBlackList = tokenBlacklistRepositoryOutPort
+					.isTokenInBlacklist(UUID.fromString(claims.get("jti", String.class)));
+
 			final String username = claims.getSubject();
 
-			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null
+					&& !isTokenInBlackList) {
 
 				@SuppressWarnings("unchecked")
 				Collection<String> roles = claims.get("roles", Collection.class);
@@ -70,7 +79,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 			filterChain.doFilter(request, response);
 		} catch (Exception e) {
-			// TODO Verify the exception here
+			throw new BadCredentialsException(token);
 		}
 	}
 }
