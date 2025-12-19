@@ -9,7 +9,7 @@ import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
 import com.music_academy.app.domain.model.User;
-import com.music_academy.app.infrastructure.config.JwtProperties;
+import com.music_academy.app.infrastructure.config.JwtPropertiesConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-	private final JwtProperties jwtProperties;
+	private final JwtPropertiesConfig jwtProperties;
 
 	public String generateToken(User user) {
 		Date now = new Date();
