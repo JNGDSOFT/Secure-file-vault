@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import com.music_academy.app.application.port.out.TokenBlacklistRepositoryOutPort;
 import com.music_academy.app.infrastructure.persistance.model.TokenBlacklistEntity;
+import com.music_academy.app.infrastructure.security.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -14,11 +16,19 @@ import lombok.RequiredArgsConstructor;
 public class JpaTokenBlacklistRepository implements TokenBlacklistRepositoryOutPort {
 
 	private final SpringDataTokenBlacklistRepository springDataTokenBlacklistRepository;
+	private final JwtUtil jwtUtil;
 
 	@Override
-	public void addTokenToBlacklist(UUID jti, Long instant) {
+	public void addTokenToBlacklist(String token) {
+
+		Claims claims = jwtUtil.getClaims(token);
+
+		String jti = claims.get("jti", String.class);
+
+		Long instant = claims.get("exp", Long.class);
+
 		TokenBlacklistEntity tokenBlacklistEntity = new TokenBlacklistEntity();
-		tokenBlacklistEntity.setJti(jti);
+		tokenBlacklistEntity.setJti(UUID.fromString(jti));
 		tokenBlacklistEntity.setExpirationInstant(instant);
 
 		springDataTokenBlacklistRepository.save(tokenBlacklistEntity);
