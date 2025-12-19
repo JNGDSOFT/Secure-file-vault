@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,7 @@ class UserServiceTests {
 		String password = "abejitamaya123";
 		User user = new User(1l, Set.of(Role.USER), email, "Encriptadita");
 
-		when(findUserByEmailOutPort.findUserByEmail(email)).thenReturn(user);
+		when(findUserByEmailOutPort.findUserByEmail(email)).thenReturn(Optional.of(user));
 		when(passwordEncoderOutPort.matches(password, user.password())).thenReturn(true);
 		when(jwtProviderOutPort.generateToken(user)).thenReturn("tokenFeliz");
 
