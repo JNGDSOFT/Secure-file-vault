@@ -1,4 +1,4 @@
-package com.music_academy.app.infrastructure.security;
+package com.music_academy.app.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.music_academy.app.infrastructure.persistance.CustomUserDetailsServiceAdapter;
+import com.music_academy.app.infrastructure.security.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
 
