@@ -41,3 +41,4 @@ public class LogInService implements LogInUserUseCase {
 		return jwtProviderOutPort.generateToken(user);
 	}
 }
+
