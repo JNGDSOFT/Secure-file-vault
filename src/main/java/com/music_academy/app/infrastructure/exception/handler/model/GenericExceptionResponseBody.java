@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class GenericExceptionResponseBody {
-	private final LocalDateTime timestamp = LocalDateTime.now();
+	private final String timestamp = LocalDateTime.now().toString();
 	private int status;
 	private String error;
 	private String message;

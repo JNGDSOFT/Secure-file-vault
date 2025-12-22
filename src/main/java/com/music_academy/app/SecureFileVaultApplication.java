@@ -8,8 +8,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class SecureFileVaultApplication {
 
 	public static void main(String[] args) {
