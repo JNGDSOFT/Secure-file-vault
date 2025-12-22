@@ -16,7 +16,11 @@ public class URIUtils {
 	 * @param id Id del elemento
 	 * @return URI con el path de consulta del elemento en el servicio
 	 */
-	public static URI getCreatedElementURI(Long id) {
-		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+	public static URI getCreatedElementURI(String pathPrefix, Long id) {
+		return ServletUriComponentsBuilder.fromCurrentRequest().path(pathPrefix + "/{id}").buildAndExpand(id).toUri();
+	}
+
+	public static String getCurrentPath() {
+		return ServletUriComponentsBuilder.fromCurrentRequest().toUriString();
 	}
 }

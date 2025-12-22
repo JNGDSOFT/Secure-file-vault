@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @Repository
 @AllArgsConstructor
-public class JpaRepositoryUserAdapter implements UserRepositoryOutPort, UserDetailsService {
+public class JpaRepositoryUserAdapter implements UserRepositoryOutPort {
 	private final SpringDataUserRepository springDataUserRepository;
 	private final UserMapper userMapper;
 
@@ -30,11 +30,5 @@ public class JpaRepositoryUserAdapter implements UserRepositoryOutPort, UserDeta
 	public User getUserById(Long id) {
 		final UserEntity foundUser = springDataUserRepository.findById(id).orElseThrow(NotFoundByIdException::new);
 		return userMapper.mapEntityToUser(foundUser);
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

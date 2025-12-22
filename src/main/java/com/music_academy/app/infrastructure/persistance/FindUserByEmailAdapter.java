@@ -1,5 +1,8 @@
 package com.music_academy.app.infrastructure.persistance;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.music_academy.app.application.port.out.FindUserByEmailOutPort;
@@ -18,9 +21,12 @@ public class FindUserByEmailAdapter implements FindUserByEmailOutPort {
 	private final UserMapper userMapper;
 
 	@Override
-	public User findUserByEmail(String email) {
-		// TODO improve those methods here
-		UserEntity userEntity = springDataUserRepository.findByEmail(email).orElseThrow(NotFoundByNameException::new);
-		return userMapper.mapEntityToUser(userEntity);
+	public Optional<User> findUserByEmail(String email) {
+		Optional<UserEntity> userEntity = springDataUserRepository.findByEmail(email);
+		if (userEntity.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return Optional.of(userMapper.mapEntityToUser(userEntity.get()));
 	}
 }

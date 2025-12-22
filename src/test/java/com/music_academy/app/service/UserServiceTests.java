@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -60,14 +64,14 @@ class UserServiceTests {
 		// TODO check this mocks
 		when(passwordEncoderOutPort.encode(password)).thenReturn(expectedEncodedPassword);
 		when(userRepositoryOutPort.createUser(any(User.class)))
-				.thenReturn(new User(1l, Role.USER, "ericardio@prueba.com", expectedEncodedPassword));
+				.thenReturn(new User(1l, Set.of(Role.USER), "ericardio@prueba.com", expectedEncodedPassword));
 
 		signUpUserService.signUp(email, password);
 	}
 
 	@Test
 	void getUserById_returnsUser_whenUserExist() {
-		User existingUser = new User(1l, Role.USER, "ericardio@prueba.com", "abejitamaya123");
+		User existingUser = new User(1l, Set.of(Role.USER), "ericardio@prueba.com", "abejitamaya123");
 		Long searchId = 1l;
 		when(userRepositoryOutPort.getUserById(1l)).thenReturn(existingUser);
 
@@ -82,9 +86,9 @@ class UserServiceTests {
 	void logIn_returnsToken_whenUserIsValid() {
 		String email = "ericardio@prueba.com";
 		String password = "abejitamaya123";
-		User user = new User(1l, Role.USER, email, "Encriptadita");
+		User user = new User(1l, Set.of(Role.USER), email, "Encriptadita");
 
-		when(findUserByEmailOutPort.findUserByEmail(email)).thenReturn(user);
+		when(findUserByEmailOutPort.findUserByEmail(email)).thenReturn(Optional.of(user));
 		when(passwordEncoderOutPort.matches(password, user.password())).thenReturn(true);
 		when(jwtProviderOutPort.generateToken(user)).thenReturn("tokenFeliz");
 

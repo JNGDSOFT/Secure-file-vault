@@ -10,7 +10,9 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "jwt")
 @Getter
 @Setter
-public class JwtProperties {
+public class JwtPropertiesConfig {
 	private String secret;
-	private long expiration;
+
+	private long expirationMillis;
+
 }
