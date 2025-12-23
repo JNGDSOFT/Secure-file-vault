@@ -35,11 +35,11 @@ public class SignUpUserService implements SignUpUserUseCase {
 
 		User user = new User(null, Set.of(Role.USER), email, passwordEncoderOutPort.encode(password));
 
-		UUID uuid = UUID.randomUUID();
+		User createdUser = userRepositoryOutPort.createUser(user);
 
-		createUserDirectoryNodeOutPort.createNode(
-				new Node(uuid, null, user, Instant.now(), null, NodeType.DIRECTORY, null, null, uuid.toString(), ""));
+		createUserDirectoryNodeOutPort.createNode(new Node(UUID.randomUUID(), null, createdUser, Instant.now(), null,
+				NodeType.DIRECTORY, null, null, null, ""));
 
-		return userRepositoryOutPort.createUser(user);
+		return createdUser;
 	}
 }
