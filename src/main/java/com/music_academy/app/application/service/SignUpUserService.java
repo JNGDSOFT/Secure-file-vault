@@ -34,15 +34,6 @@ public class SignUpUserService implements SignUpUserUseCase {
 		User user = new User(null, Set.of(Role.USER), email, passwordEncoderOutPort.encode(password));
 
 		User createdUser = userRepositoryOutPort.createUser(user);
-
-		String pathPrefix = "user" + createdUser.id() + "/home/";
-
-		Node node = new Node(null, null, createdUser, null, "home", NodeType.DIRECTORY, null, pathPrefix);
-
-		createBucketDirectoryOutPort.createDirectory(pathPrefix, "");
-
-		createUserDirectoryNodeOutPort.createNode(node);
-
 		return createdUser;
 	}
 }

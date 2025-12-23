@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.music_academy.app.infrastructure.constant.S3Constants;
+import com.music_academy.app.infrastructure.constant.BucketConstants;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -18,9 +18,9 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 
 @Configuration
-public class AwsS3Config {
+public class BucketConfig {
 
-	private final Logger logger = LoggerFactory.getLogger(AwsS3Config.class);
+	private final Logger logger = LoggerFactory.getLogger(BucketConfig.class);
 
 	@Value("${aws.accessKeyId}")
 	private String accessKeyId;
@@ -38,10 +38,10 @@ public class AwsS3Config {
 				.endpointOverride(URI.create("http://" + s3Url)).region(Region.of("LOCAL")).build();
 
 		try {
-			s3Client.headBucket(b -> b.bucket(S3Constants.DEFAULT_BUCKET));
+			s3Client.headBucket(b -> b.bucket(BucketConstants.DEFAULT_BUCKET));
 			logger.info("There is already a bucket so the app is running normally");
 		} catch (S3Exception s3Exception) {
-			s3Client.createBucket(b -> b.bucket(S3Constants.DEFAULT_BUCKET));
+			s3Client.createBucket(b -> b.bucket(BucketConstants.DEFAULT_BUCKET));
 			logger.info("ROOT Bucket was created because there was not any");
 		}
 

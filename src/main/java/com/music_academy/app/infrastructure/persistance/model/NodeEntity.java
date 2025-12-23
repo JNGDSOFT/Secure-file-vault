@@ -1,6 +1,7 @@
 package com.music_academy.app.infrastructure.persistance.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.music_academy.app.domain.model.NodeType;
 
@@ -24,8 +25,7 @@ import lombok.Setter;
 public class NodeEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private UUID id;
 
 	@ManyToOne
 	@JoinColumn(name = "id_parent_node")
@@ -42,8 +42,13 @@ public class NodeEntity {
 	@Enumerated(EnumType.STRING)
 	private NodeType nodeType;
 
+	private String nodeContentType;
+
 	private Long size;
 
 	@Column(unique = true)
 	private String s3Key;
+
+	private String treePath;
+
 }
