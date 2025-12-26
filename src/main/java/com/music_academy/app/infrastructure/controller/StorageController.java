@@ -20,12 +20,12 @@ import com.music_academy.app.infrastructure.persistance.model.UserEntity;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/storage")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 public class StorageController {
 	private final UploadFileUseCase uploadFileUseCase;
 
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/upload")
 	public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "parentId", required = false) UUID parentId, Authentication authentication)
 			throws StorageException, IOException {
