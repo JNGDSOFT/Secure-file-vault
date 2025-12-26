@@ -1,10 +1,8 @@
 package com.music_academy.app.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
-public record Node(Long id, Node parentNode, User owner, LocalDateTime creationDateTime, String name, NodeType nodeType,
-		Integer size, String s3Key) {
-	public Node {
-		creationDateTime = LocalDateTime.now();
-	}
+public record Node(UUID id, Node parentNode, User owner, Instant createdAt, String name, NodeType nodeType,
+		String nodeContentType, Long size, String s3Key, String treePath) {
 }

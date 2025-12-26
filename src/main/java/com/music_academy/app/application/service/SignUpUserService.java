@@ -1,7 +1,10 @@
 package com.music_academy.app.application.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,6 @@ public class SignUpUserService implements SignUpUserUseCase {
 	private final UserRepositoryOutPort userRepositoryOutPort;
 	private final PasswordEncoderOutPort passwordEncoderOutPort;
 	private final CreateUserDirectoryNodeOutPort createUserDirectoryNodeOutPort;
-	private final CreateBucketDirectoryOutPort createBucketDirectoryOutPort;
 
 	@Override
 	public User signUp(String email, String password) {
@@ -35,13 +37,8 @@ public class SignUpUserService implements SignUpUserUseCase {
 
 		User createdUser = userRepositoryOutPort.createUser(user);
 
-		String pathPrefix = "user" + createdUser.id() + "/home/";
-
-		Node node = new Node(null, null, createdUser, null, "home", NodeType.DIRECTORY, null, pathPrefix);
-
-		createBucketDirectoryOutPort.createDirectory(pathPrefix, "");
-
-		createUserDirectoryNodeOutPort.createNode(node);
+		createUserDirectoryNodeOutPort.createRootNode(new Node(UUID.randomUUID(), null, createdUser, Instant.now(),
+				null, NodeType.DIRECTORY, null, null, null, ""));
 
 		return createdUser;
 	}

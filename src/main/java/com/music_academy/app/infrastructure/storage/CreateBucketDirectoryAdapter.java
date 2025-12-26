@@ -3,7 +3,7 @@ package com.music_academy.app.infrastructure.storage;
 import org.springframework.stereotype.Component;
 
 import com.music_academy.app.application.port.out.CreateBucketDirectoryOutPort;
-import com.music_academy.app.infrastructure.constant.S3Constants;
+import com.music_academy.app.infrastructure.constant.BucketConstants;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -18,6 +18,6 @@ public class CreateBucketDirectoryAdapter implements CreateBucketDirectoryOutPor
 
 	@Override
 	public void createDirectory(String pathPrefix, String name) {
-		s3Client.putObject(b -> b.bucket(S3Constants.DEFAULT_BUCKET).key(pathPrefix + name), RequestBody.empty());
+		s3Client.putObject(b -> b.bucket(BucketConstants.DEFAULT_BUCKET).key(pathPrefix + name), RequestBody.empty());
 	}
 }

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class S3Constants {
+public class BucketConstants {
 	public static final String DEFAULT_BUCKET = "root";
 	
 }
