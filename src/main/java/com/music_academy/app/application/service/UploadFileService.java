@@ -62,7 +62,7 @@ public class UploadFileService implements UploadFileUseCase {
 
 		UUID uuid = UUID.randomUUID();
 
-		Node node = new Node(uuid, targetNode, user, Instant.now(), multipartFile.getName(), NodeType.FILE,
+		Node node = new Node(uuid, targetNode, user, Instant.now(), multipartFile.getOriginalFilename(), NodeType.FILE,
 				multipartFile.getContentType(), multipartFile.getSize(), uuid.toString(), targetNode.treePath());
 
 		nodeRepositoryOutPort.saveNode(node);
