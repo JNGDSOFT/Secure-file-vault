@@ -30,10 +30,10 @@ public class NodeEntity {
 	private NodeEntity parentNode;
 
 	@ManyToOne
-	@JoinColumn(name = "id_user")
+	@JoinColumn(name = "owner_id")
 	private UserEntity owner;
 
-	private Instant creationInstant;
+	private Instant createdAt;
 
 	private String name;
 
