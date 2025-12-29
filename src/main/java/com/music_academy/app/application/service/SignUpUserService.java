@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.music_academy.app.application.port.in.SignUpUserUseCase;
-import com.music_academy.app.application.port.out.CreateBucketDirectoryOutPort;
 import com.music_academy.app.application.port.out.CreateUserDirectoryNodeOutPort;
 import com.music_academy.app.application.port.out.PasswordEncoderOutPort;
 import com.music_academy.app.application.port.out.UserRepositoryOutPort;
