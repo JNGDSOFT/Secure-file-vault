@@ -30,22 +30,24 @@ public class CreateFolderService implements CreateFolderUseCase {
 	public void createFolder(Long ownerUserId, UUID parentNodeUuid, String name) throws StorageException {
 		User user = userRepositoryOutPort.getUserById(ownerUserId);
 
-		Node node;
-
+		Node parentNode;
+		
 		if (parentNodeUuid != null) {
-			node = nodeRepositoryOutPort.getNodeById(parentNodeUuid);
-			if (!node.nodeType().equals(NodeType.DIRECTORY)) {
+			parentNode = nodeRepositoryOutPort.getNodeById(parentNodeUuid);
+			if (!parentNode.nodeType().equals(NodeType.DIRECTORY)) {
 				throw new IllegalNodeType("Referenced parent node is not a folder");
 			}
 		} else {
-			node = getRootNodeOutPort.getRootNode(user);
+			parentNode = getRootNodeOutPort.getRootNode(user);
 		}
 
-		if (!user.id().equals(node.owner().id())) {
+		if (!user.id().equals(parentNode.owner().id())) {
 			throw new IllegalFolderAccess("cannot access to this folder because the user is not the owner");
 		}
 
-		nodeRepositoryOutPort.saveNode(new Node(UUID.randomUUID(), node, user, Instant.now(), name, NodeType.DIRECTORY,
-				null, null, null, node.treePath() + "/" + name));
+		UUID newNodeUuid = UUID.randomUUID();
+
+		nodeRepositoryOutPort.saveNode(new Node(newNodeUuid, parentNode, user, Instant.now(), name, NodeType.DIRECTORY,
+				null, null, null, parentNode.treePath() + parentNode.id().toString() + "/"));
 	}
 }
