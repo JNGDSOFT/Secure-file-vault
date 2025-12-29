@@ -17,6 +17,7 @@ import com.music_academy.app.domain.model.NodeType;
 import com.music_academy.app.domain.model.User;
 import com.music_academy.app.infrastructure.exception.IllegalNodeType;
 import com.music_academy.app.infrastructure.exception.StorageException;
+import com.music_academy.app.infrastructure.exception.handler.IllegalFolderAccess;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,8 @@ public class UploadFileService implements UploadFileUseCase {
 	private final NodeRepositoryOutPort nodeRepositoryOutPort;
 
 	@Override
-	public void uploadFile(Long userId, UUID parentNodeId, MultipartFile multipartFile) throws StorageException, IOException {
+	public void uploadFile(Long userId, UUID parentNodeId, MultipartFile multipartFile)
+			throws StorageException, IOException {
 
 		User user = userRepositoryOutPort.getUserById(userId);
 
@@ -46,8 +48,13 @@ public class UploadFileService implements UploadFileUseCase {
 					throw new IllegalNodeType(
 							"The node type is incorrect, it must be a directory to be used as a container");
 				}
-			} catch (IllegalNodeType e) {
-				throw new StorageException("There was an error while saving a file", e);
+				if (!targetNode.owner().id().equals(userId)) {
+					throw new IllegalFolderAccess("This user doesn´t own this folder");
+				}
+			} catch (IllegalNodeType a) {
+				throw new StorageException("There was an error while saving a file", a);
+			} catch (IllegalFolderAccess b) {
+				throw new StorageException("There was an error while saving a file", b);
 			}
 		} else {
 			targetNode = getRootNodeOutPort.getRootNode(user);
@@ -55,7 +62,7 @@ public class UploadFileService implements UploadFileUseCase {
 
 		UUID uuid = UUID.randomUUID();
 
-		Node node = new Node(uuid, targetNode, user, Instant.now(), multipartFile.getName(), NodeType.FILE,
+		Node node = new Node(uuid, targetNode, user, Instant.now(), multipartFile.getOriginalFilename(), NodeType.FILE,
 				multipartFile.getContentType(), multipartFile.getSize(), uuid.toString(), targetNode.treePath());
 
 		nodeRepositoryOutPort.saveNode(node);

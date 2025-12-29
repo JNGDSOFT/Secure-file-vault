@@ -22,7 +22,6 @@ import com.music_academy.app.infrastructure.controller.dto.UserLogInResponseDTO;
 import com.music_academy.app.infrastructure.controller.dto.UserResponseDTO;
 import com.music_academy.app.infrastructure.mapper.UserMapper;
 import com.music_academy.app.infrastructure.persistance.model.UserEntity;
-import com.music_academy.app.infrastructure.storage.CreateBucketDirectoryAdapter;
 import com.music_academy.app.infrastructure.utils.ServletUtils;
 import com.music_academy.app.infrastructure.utils.URIUtils;
 
@@ -33,9 +32,6 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/auth")
 @AllArgsConstructor
 public class UserAuthenticationController {
-
-	private final CreateBucketDirectoryAdapter createBucketDirectoryAdapter;
-
 	private final SignUpUserUseCase signUpUserUseCase;
 	private final LogInUserUseCase logInUserUseCase;
 	private final GetUserByIdUseCase getUserById;
