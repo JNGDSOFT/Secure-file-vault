@@ -27,11 +27,11 @@ public class CreateFolderService implements CreateFolderUseCase {
 	private final GetRootNodeOutPort getRootNodeOutPort;
 
 	@Override
-	public void createFolder(Long ownerUserId, UUID parentNodeUuid, String name) throws StorageException {
+	public Node createFolder(Long ownerUserId, UUID parentNodeUuid, String name) throws StorageException {
 		User user = userRepositoryOutPort.getUserById(ownerUserId);
 
 		Node parentNode;
-		
+
 		if (parentNodeUuid != null) {
 			parentNode = nodeRepositoryOutPort.getNodeById(parentNodeUuid);
 			if (!parentNode.nodeType().equals(NodeType.DIRECTORY)) {
@@ -47,7 +47,7 @@ public class CreateFolderService implements CreateFolderUseCase {
 
 		UUID newNodeUuid = UUID.randomUUID();
 
-		nodeRepositoryOutPort.saveNode(new Node(newNodeUuid, parentNode, user, Instant.now(), name, NodeType.DIRECTORY,
-				null, null, null, parentNode.treePath() + parentNode.id().toString() + "/"));
+		return nodeRepositoryOutPort.saveNode(new Node(newNodeUuid, parentNode, user, Instant.now(), name,
+				NodeType.DIRECTORY, null, null, null, parentNode.treePath() + parentNode.id().toString() + "/"));
 	}
 }
