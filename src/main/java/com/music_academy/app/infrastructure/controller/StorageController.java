@@ -45,9 +45,6 @@ public class StorageController {
 	public ResponseEntity<Void> createFolder(@RequestBody CreateFolderRequestDTO createFolderRequestDTO,
 			Authentication authentication) throws StorageException {
 		Long userId = ((UserEntity) authentication.getPrincipal()).getId();
-
-		System.err.println(createFolderRequestDTO.name() + createFolderRequestDTO.parentNode().toString());
-
 		createFolderUseCase.createFolder(userId, createFolderRequestDTO.parentNode(), createFolderRequestDTO.name());
 
 		return ResponseEntity.noContent().build();
